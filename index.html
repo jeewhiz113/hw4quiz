@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="style1.css">
+    
+</head>
+<body>
+    <div id="scores"><a href = "">view scores</a></div>
+    <div id="timer"></div>
+    <div class="container">
+        <div id = "question-container">
+            <div id = "title"><h1>Coding Quiz Challenge</h1></div>
+            <div id = "displayScore"></div>
+            <div id = "question">Try to answer the following code-related questions within
+                the time limit.  Keep in mind that incorrect answers will penalize your score/time by 30 seconds.
+            </div>
+
+            <div  id ="answers" class = "hide" >
+                <button class = "button">Answer 1</button>
+                <button class = "button">Answer 2</button>
+                <button class = "button">Answer 3</button>
+                <button class = "button">Answer 4</button>
+            </div>
+
+        </div>
+        <div class = "controls">
+            <button id = "startButton">Start</button>
+            <!-- Next button here-->
+            <button id = "nextButton" class = "hide">Next</button>
+        </div>
+        <!-- action="highscores.html" method="get"-->
+        <form id = 'form' class = 'hide'>
+            Enter initials: 
+            <input type="text" id="initial" name="fname"><br>
+            <button id ='submit'>Submit</button>
+              
+        </form>
+
+
+    </div>
+    
+</body>
+<script src = "script.js"></script>
+<script src = "timer.js"></script>
+<script src = "script1.js"></script>
+<script>//Wait this script tag always goes towards the end?!?!?!</script>
+</html>
