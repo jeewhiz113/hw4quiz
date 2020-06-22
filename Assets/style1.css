@@ -28,7 +28,7 @@ body{
     font-size:18px;
     margin-right: 5px; 
 }
-#answers{
+#answers-button{
     
     gap:5px;
     margin: 20px;
@@ -48,7 +48,7 @@ body{
 .hide{
     display:none;
 }
-#scores{
+.highscores{
     font-size:30px;
     position:absolute;
     left:20px;
@@ -61,3 +61,6 @@ body{
     top:20px;  
 }
 
+#displayScores{
+    font-size:18px;
+}

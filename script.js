@@ -1,14 +1,31 @@
 var startButton = document.getElementById('startButton');
-var answers = document.getElementById('answers')
+//var answers = document.getElementById('answers')
 var questionElement = document.getElementById("question");
 var answerButtonElement = document.getElementById("answers");
 var titleElement = document.getElementById("title");
 var scoreElement = document.getElementById("displayScore");
 var formElement = document.getElementById("form");
-var submitElement = document.getElementById("submit");
+var submitElement = document.getElementById("submitBtn");
 var initialElement = document.getElementById('initial');
-var index =0;
+
+var index = 0;
 var scores = 0;
+var timer = document.getElementById("timer");
+var timeRemain =30*1000; // start with 60 seconds;
+function displayTime(){
+      
+    var seconds = timeRemain/1000;  //mod out the minutes, we are left with seconds.
+    if (timeRemain > 0){
+        timeRemain -= 1000;
+    }else {
+        timeRemain = 0;
+    }
+    timer.innerHTML =  seconds;
+}
+
+
+
+
 var questionAndAnswers=[
     {
         question: "Commonly used data types DO NOT include:",
@@ -55,17 +72,14 @@ var questionAndAnswers=[
             {text: "4. console.log", correct: true}
         ]
     }
-    
-
-
 ]
 startButton.addEventListener('click', startGame);
 
-
 function startGame(){
+    setInterval(displayTime, 1000);
     console.log("game started");
     startButton.classList.add('hide');
-    answers.classList.remove('hide');
+    answerButtonElement.classList.remove('hide');
     titleElement.classList.add('hide');
 
     displayNextQuestion(index);
@@ -73,7 +87,7 @@ function startGame(){
 }
 
 function displayNextQuestion(i){
-    deleteChildren();
+    deleteChildren(answerButtonElement);
     questionElement.innerText = questionAndAnswers[i].question;
     questionAndAnswers[i].answers.forEach(answer=>{
         var button = document.createElement('button');
@@ -86,33 +100,29 @@ function displayNextQuestion(i){
         }
         button.addEventListener('click', pickAnswer);  //now computer is listening for a click, if it does, then call pickAnswer
         answerButtonElement.append(button);
-
-       
-    })
+    });
 
 }
-function deleteChildren(){
-    var child = answerButtonElement.lastElementChild;
+function deleteChildren(button){
+    var child = button.lastElementChild;
     while(child){
-      answerButtonElement.removeChild(child);
-      child = answerButtonElement.lastElementChild;
+      button.removeChild(child);
+      child = button.lastElementChild;
     }
-  }
+}
 
 function pickAnswer(e){
-    
     var selectedButton = e.target;
     var correct = selectedButton.dataset.correct;
     console.log(selectedButton);
-    
     if (correct == "true"){
         scores+=10;
     }else {
+        timeRemain -= 10000;
         scores-=10;
     }
-    if (index <5){
+    if (index <5 && timeRemain > 0){
         displayNextQuestion(index);
-        //console.log(correct);
     }else {
         console.log("Done with test")
         addScores();
@@ -120,13 +130,7 @@ function pickAnswer(e){
     index++;
 }
 
-//Now the all done part.  So we hide all the elements
-/*
-    Display all done!
-    display your final score is ...
-    create a form element with a submit button.
 
-*/
 function addScores(){
     titleElement.classList.remove('hide');
     questionElement.classList.add('hide');
@@ -134,23 +138,23 @@ function addScores(){
     titleElement.innerHTML="All Done! \n";
     scoreElement.innerHTML = "Your final score is " + scores +"\n";
     formElement.classList.remove('hide');
-    submitElement.addEventListener('click', appendScoreObject)
-
-    /*
-    var anchor = document.createElement('A');
-    anchor.setAttribute("href", "highscores.html")
-    var button1 = document.createElement('button');
-    button1.innerText = "submit";
-    formElement.append(anchor).append(button1);
-    button1.addEventListener('click', ) //then add the information to the scoresArray*/
-
+    //submitElement.addEventListener('click', appendScoreObject)
+    submitElement.addEventListener('click', function(event){
+        console.log("submit clicked")
+        var newScore = {
+            name: initialElement.value,
+            score: scores,
+        }
+        if (localStorage.getItem("list") === null){
+            var array = [];
+            array.push(newScore);
+            localStorage.setItem("list", JSON.stringify(array));
+        }else {
+            var array = JSON.parse(localStorage["list"]);
+            array.push(newScore);
+            localStorage.setItem("list", JSON.stringify(array));
+        }
+        console.log(localStorage.list);
+    })
 }
-
-function appendScoreObject(){
-    //Put them all in local storage as an object.  
-    //Then we wish to construct the sort method of the array returned as an object
-    //then display them just like previous lists.
-    localStorage.setItem(initialElement.value, scores);
-}
-
 
